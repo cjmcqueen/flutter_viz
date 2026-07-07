@@ -1,0 +1,115 @@
+{
+  "fileName": "test_ui.dart",
+  "rootView": {
+    "type": "Scaffold",
+    "id": "w_${DateTime.now().millisecondsSinceEpoch}_${type.toLowerCase()}",
+    "title": "Scaffold",
+    "viewModel": {},
+    "widgetList": [
+      {
+        "type": "AppBar",
+        "id": "w_${DateTime.now().millisecondsSinceEpoch}_${type.toLowerCase()}",
+        "title": "AppBar",
+        "viewModel": {},
+        "widgetList": [
+          {
+            "type": "Text",
+            "id": "w_${DateTime.now().millisecondsSinceEpoch}_${type.toLowerCase()}",
+            "title": "Text",
+            "viewModel": {},
+            "widgetList": []
+          }
+        ]
+      },
+      {
+        "type": "Container",
+        "id": "w_${DateTime.now().millisecondsSinceEpoch}_${type.toLowerCase()}",
+        "title": "Container",
+        "viewModel": {
+          "color": "red"
+        },
+        "widgetList": [
+          {
+            "type": "Column",
+            "id": "w_${DateTime.now().millisecondsSinceEpoch}_${type.toLowerCase()}",
+            "title": "Column",
+            "viewModel": {},
+            "widgetList": [
+              {
+                "type": "Text",
+                "id": "w_${DateTime.now().millisecondsSinceEpoch}_${type.toLowerCase()}",
+                "title": "Text",
+                "viewModel": {},
+                "widgetList": []
+              },
+              {
+                "type": "Text",
+                "id": "w_${DateTime.now().millisecondsSinceEpoch}_${type.toLowerCase()}",
+                "title": "Text",
+                "viewModel": {},
+                "widgetList": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "selectedWidgetList": [
+    {
+      "type": "Scaffold",
+      "id": "w_${DateTime.now().millisecondsSinceEpoch}_${type.toLowerCase()}",
+      "title": "Scaffold",
+      "viewModel": {},
+      "widgetList": [
+        {
+          "type": "AppBar",
+          "id": "w_${DateTime.now().millisecondsSinceEpoch}_${type.toLowerCase()}",
+          "title": "AppBar",
+          "viewModel": {},
+          "widgetList": [
+            {
+              "type": "Text",
+              "id": "w_${DateTime.now().millisecondsSinceEpoch}_${type.toLowerCase()}",
+              "title": "Text",
+              "viewModel": {},
+              "widgetList": []
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "id": "w_${DateTime.now().millisecondsSinceEpoch}_${type.toLowerCase()}",
+          "title": "Container",
+          "viewModel": {
+            "color": "red"
+          },
+          "widgetList": [
+            {
+              "type": "Column",
+              "id": "w_${DateTime.now().millisecondsSinceEpoch}_${type.toLowerCase()}",
+              "title": "Column",
+              "viewModel": {},
+              "widgetList": [
+                {
+                  "type": "Text",
+                  "id": "w_${DateTime.now().millisecondsSinceEpoch}_${type.toLowerCase()}",
+                  "title": "Text",
+                  "viewModel": {},
+                  "widgetList": []
+                },
+                {
+                  "type": "Text",
+                  "id": "w_${DateTime.now().millisecondsSinceEpoch}_${type.toLowerCase()}",
+                  "title": "Text",
+                  "viewModel": {},
+                  "widgetList": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

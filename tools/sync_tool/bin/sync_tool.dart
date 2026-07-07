@@ -72,54 +72,70 @@ class WidgetTreeVisitor extends RecursiveAstVisitor<void> {
     super.visitReturnStatement(node);
   }
 
-  Map<String, dynamic>? _parseExpression(Expression expression) {
-    if (expression is InstanceCreationExpression) {
-      final type = expression.constructorName.type.name2.lexeme;
+  Map<String, dynamic>? _parseExpression(dynamic expression) {
+    print('Parsing expression: ${expression.runtimeType}');
+    if (expression.runtimeType.toString().contains('MethodInvocation')) {
+      final type = expression.methodName.name;
       final arguments = expression.argumentList.arguments;
+      return _buildWidgetModel(type, arguments);
+    } 
+    else if (expression.runtimeType.toString().contains('InstanceCreationExpression')) {
+      final type = expression.constructorName.type.toSource();
+      final arguments = expression.argumentList.arguments;
+      return _buildWidgetModel(type, arguments);
+    }
+    return null;
+  }
 
+  Map<String, dynamic> _buildWidgetModel(String type, dynamic arguments) {
+      print('Building widget model for type: $type');
       final widgetModel = <String, dynamic>{
         'type': type,
-        'id': 'w_${DateTime.now().millisecondsSinceEpoch}_${type.toLowerCase()}',
+        'id': 'w_\${DateTime.now().millisecondsSinceEpoch}_\${type.toLowerCase()}',
         'title': type,
         'viewModel': <String, dynamic>{},
         'widgetList': <Map<String, dynamic>>[],
       };
 
       for (final arg in arguments) {
-        if (arg is NamedExpression) {
-          final paramName = arg.name.label.name;
-          if (paramName == 'child' || paramName == 'body') {
-            final childWidget = _parseExpression(arg.expression);
-            if (childWidget != null) {
+        print('Processing arg: ${arg.runtimeType}');
+        if (arg.runtimeType.toString().contains('NamedExpression') || arg.runtimeType.toString().contains('NamedArgument')) {
+          final paramNameStr = arg.toSource();
+          final splitIndex = paramNameStr.indexOf(':');
+          final paramName = paramNameStr.substring(0, splitIndex).trim();
+          final exp = arg.childEntities.last;
+          
+          print('Named param: $paramName, expression type: ${exp.runtimeType}');
+          final childWidget = _parseExpression(exp);
+          
+          if (childWidget != null) {
+              print('Added child widget to $type for param $paramName');
               (widgetModel['widgetList'] as List).add(childWidget);
-            }
           } else if (paramName == 'children') {
-            if (arg.expression is ListLiteral) {
-              final list = arg.expression as ListLiteral;
-              for (final element in list.elements) {
-                if (element is Expression) {
-                  final childWidget = _parseExpression(element);
-                  if (childWidget != null) {
-                    (widgetModel['widgetList'] as List).add(childWidget);
-                  }
+            if (exp.runtimeType.toString().contains('ListLiteral')) {
+              for (final element in exp.elements) {
+                final childListItem = _parseExpression(element);
+                if (childListItem != null) {
+                  (widgetModel['widgetList'] as List).add(childListItem);
                 }
               }
             }
           } else {
+             print('Processing as view model value: $paramName');
              // For simple values, try to extract them as view models
-             if (arg.expression is IntegerLiteral) {
-               widgetModel['viewModel'][paramName] = (arg.expression as IntegerLiteral).value;
-             } else if (arg.expression is DoubleLiteral) {
-               widgetModel['viewModel'][paramName] = (arg.expression as DoubleLiteral).value;
-             } else if (arg.expression is StringLiteral) {
-               widgetModel['viewModel'][paramName] = (arg.expression as StringLiteral).stringValue;
+             if (exp.runtimeType.toString().contains('IntegerLiteral')) {
+               widgetModel['viewModel'][paramName] = exp.value;
+             } else if (exp.runtimeType.toString().contains('DoubleLiteral')) {
+               widgetModel['viewModel'][paramName] = exp.value;
+             } else if (exp.runtimeType.toString().contains('StringLiteral')) {
+               widgetModel['viewModel'][paramName] = exp.stringValue;
+             } else {
+               widgetModel['viewModel'][paramName] = exp.toSource();
              }
           }
         }
       }
 
       return widgetModel;
-    }
-    return null;
   }
 }
